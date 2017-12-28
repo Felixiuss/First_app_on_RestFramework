@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib.auth.models import User
 from rest_framework import routers, serializers, viewsets
+from django.conf.urls import include
 
 
 # Serializers define the API representation.
@@ -40,6 +41,11 @@ urlpatterns = [
     url(r'^', include('snippets.urls')),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 
+]
+
+urlpatterns += [
+    url(r'^api-auth/', include('rest_framework.urls',
+                               namespace='rest_framework')),
 ]
 
 # from django.conf.urls import url
