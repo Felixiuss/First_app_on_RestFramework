@@ -27,8 +27,8 @@ class Snippet(models.Model):
 
     def save(self, *args, **kwargs):
         """
-        Use the `pygments` library to create a highlighted HTML
-        representation of the code snippet.
+        Используйте библиотеку `pygments` для создания выделенного HTML-кода
+        представление фрагмента кода.
         """
         lexer = get_lexer_by_name(self.language)
         linenos = self.linenos and 'table' or False
@@ -37,3 +37,8 @@ class Snippet(models.Model):
                                   full=True, **options)
         self.highlighted = highlight(self.code, lexer, formatter)
         super(Snippet, self).save(*args, **kwargs)
+
+        # ограничить количество сохраненных экземпляров
+        snippets = Snippet.objects.all()
+        if len(snippets) > 100:
+            snippets[0].delete()
